@@ -64,6 +64,7 @@ def parse_args():
 	## na_test
 	parser.add_argument('--test_camera_view', type=int,default=0)
 	parser.add_argument('--test', action='store_true')
+	parser.add_argument("--white_bkgd", action='store_true')
 	parser.add_argument('--render_img_HW', type=int, default=None)
 	parser.add_argument("--shaded_mesh", action='store_true')
 

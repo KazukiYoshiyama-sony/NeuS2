@@ -256,7 +256,7 @@ def render_img_training_view(args, testbed, log_ptr, image_dir, frame_time_id = 
     os.makedirs(img_path, exist_ok=True)
     print("Evaluating test transforms from ", args.scene, file=log_ptr)
     log_ptr.flush()
-    with open(image_dir) as f:
+    with open(f"{image_dir}/transform_test.json") as f:
         test_transforms = json.load(f)
     if os.path.isfile(args.scene):
         data_dir=os.path.dirname(args.scene)
@@ -283,6 +283,8 @@ def render_img_training_view(args, testbed, log_ptr, image_dir, frame_time_id = 
     testbed.nerf.rendering_min_transmittance = 1e-4
 
     camera_view = args.test_camera_view
+    if len(test_transforms["frames"]) == 0:
+        return
     frame = test_transforms["frames"][camera_view]
     p = frame["file_path"]
     if "." not in p:

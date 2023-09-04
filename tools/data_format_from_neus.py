@@ -85,14 +85,16 @@ def generate(dataset_name, base_par_dir, copy_image=True, is_downsample=False, d
 
     conf = {
         "data_dir": base_dir,
-        "render_cameras_name": "cameras_sphere.npz",
-        "object_cameras_name": "cameras_sphere.npz",
+        "render_cameras_name": "cameras.npz",
+        "object_cameras_name": "cameras.npz",
     }
     dataset = Dataset(conf)
     image_name = 'image'
     mask_name = 'mask'
     test_view = [8, 13, 16, 21, 26, 31, 34, 56]
 
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
     base_rgb_dir = join(base_dir,image_name)
@@ -168,8 +170,9 @@ def generate(dataset_name, base_par_dir, copy_image=True, is_downsample=False, d
 
             one_frame["intrinsic_matrix"] = ixt.tolist()
 
-            if i not in test_view:
-                output['frames'].append(one_frame)
+            # if i not in test_view:
+            #     output['frames'].append(one_frame)
+            output['frames'].append(one_frame) # always added
 
         file_dir = join(output_dir, f'transform_train.json')
         with open(file_dir,'w') as f:
@@ -211,26 +214,29 @@ def generate(dataset_name, base_par_dir, copy_image=True, is_downsample=False, d
             if i in test_view:
                 output_test['frames'].append(one_frame)
 
+        if rgb_num == 0:
+            return
         file_dir = join(output_dir, f'transform_test.json')
         with open(file_dir,'w') as f:
             json.dump(output_test, f, indent=4)
 
 
 if __name__ == "__main__":
-    base_par_dir = "/home/downloads/data_DTU/"
+    
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_all', action="store_true")
-    parser.add_argument('--dataset_name', type=str, default='dtu_scan97')
+    parser.add_argument('--base_par_dir', type=str, required=True)
+    parser.add_argument('--dataset_name', type=str)
     parser.add_argument("--copy_image", action="store_true")
     args = parser.parse_args()
     
     if args.dataset_all:
-        for dataset_name in os.listdir(base_par_dir):
+        for dataset_name in os.listdir(args.base_par_dir):
             print("dataset_name:", dataset_name)
-            generate(dataset_name, base_par_dir, args.copy_image)
+            generate(dataset_name, args.base_par_dir, args.copy_image)
     else:
-        generate(args.dataset_name, base_par_dir, args.copy_image)
+        generate(args.dataset_name, args.base_par_dir, args.copy_image)
     
     
     

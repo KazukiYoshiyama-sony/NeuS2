@@ -227,8 +227,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_all', action="store_true")
     parser.add_argument('--base_par_dir', type=str, required=True)
-    parser.add_argument('--dataset_name', type=str)
-    parser.add_argument("--copy_image", action="store_true")
+    parser.add_argument('--dataset_name', type=str, required=True)
+    parser.add_argument("--copy_image", action="store_true", required=True)
     args = parser.parse_args()
     
     if args.dataset_all:

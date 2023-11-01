@@ -137,6 +137,13 @@ Dynamic scene examples can be downloaded from [Google Drive](https://drive.googl
 
 We also provide a data conversion from [NeuS](https://lingjie0206.github.io/papers/NeuS/) to our data convention, which can be found in `tools/data_format_from_neus.py`.
 
+```bash
+python tools/data_format_from_neus.py \
+  --base_par_dir <pathto/original/dataname/parent> \
+  --dataset_name <dataname> \
+  --copy_image
+```
+
 ## Acknowledgements & Citation
 
 - [NeuS2](https://vcai.mpi-inf.mpg.de/projects/NeuS2/)
